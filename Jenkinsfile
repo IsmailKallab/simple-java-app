@@ -13,7 +13,7 @@ pipeline{
         stage('test'){
             steps{
                 script{
-                    echo "test in progress"
+                    echo "test in progress check"
                 }
             }
         }

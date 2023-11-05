@@ -1,12 +1,14 @@
 pipeline{
-    agent any
+    agent{
+        label 'aws-agent'
+    }
 
 
     stages{
         stage('build'){
             steps{
                 script{
-                    echo "build in progress"
+                    sh 'mvn clean package'
                 }
             }
         }
@@ -18,4 +20,13 @@ pipeline{
             }
         }
     }
+post {
+  success {
+    slackSend channel: '#jenkins-ci', message: "Build success ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)", teamDomain: 'ismail-xqp6906', tokenCredentialId: 'slack-notification'
+  }
+    failure {
+           slackSend channel: '#jenkins-ci', message: "Build failed ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)", teamDomain: 'ismail-xqp6906', tokenCredentialId: 'slack-notification'
+ 
+  }
+}
 }

@@ -1,5 +1,5 @@
 # simple-java-app
-## This is simple Java App to Test Continous Integration and Deployment
+## This is a simple Java App to Test Continous Integration and Deployment
 
 ### Build the Java code
 ```mvn clean package```
@@ -8,4 +8,4 @@
 ```mvn test```
 
 
-```mvn test 23```
+```mvn test 234```

@@ -1,10 +1,8 @@
-FROM ubuntu
-RUN apt-get update -qy && apt-get install openjdk-8-jdk -qy &&\
-    apt-get install openssh-server -qy && apt-get install -qy maven
+FROM maven:3.6.3-jdk-11-slim
+COPY src /app/src
+COPY pom.xml  /app
+RUN mvn -f /app/pom.xml clean package
 
-RUN apt-get install -qy git && sed -i 's|session    required    pam_loginuid.so|session     optional pam_loginuid.so|g' /etc/pam.d/sshd && \
-    mkdir -p /var/run/sshd
+RUN mv /app/target/*.jar app.jar
 
-RUN useradd -ms /bin/bash jenkins --home /home/jenkins && echo "jenkins:jenkins" | chpasswd
-EXPOSE 22
-CMD [ "/usr/sbin/ssh","-D"]
+ENTRYPOINT [ "java","-jar","/app.jar" ]
